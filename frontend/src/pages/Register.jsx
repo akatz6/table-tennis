@@ -5,6 +5,7 @@ import Form from "react-bootstrap/Form";
 import { toast } from "react-toastify";
 import { useSelector, useDispatch } from "react-redux";
 import { register, reset } from "../features/auth/authSlice";
+import Spinner from "../components/Spinner";
 
 function Register() {
   const [formData, setFormData] = useState({
@@ -57,6 +58,10 @@ function Register() {
       dispatch(register(userData));
     }
   };
+
+  if (isLoading) {
+    return <Spinner />;
+  }
   return (
     <div className="form-control form-control-sm">
       <Form onSubmit={onSubmit}>
