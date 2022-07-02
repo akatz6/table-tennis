@@ -1,17 +1,28 @@
-import { Link } from "react-router-dom";
+import { getPlayers } from "../features/player/playerSlice";
+import { useState, useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
 
 function Home() {
+  // const obj = {
+  //     name :"aaron"
+  // }
+  const dispatch = useDispatch();
+  // let test = 0;
 
-    const obj = {
-        name :"aaron"
-    }
+  useEffect(() => {
+    dispatch(getPlayers());
+  }, [dispatch]);
+
+  const { players } = useSelector((state) => state.player);
+  console.log(players);
+
   return (
     <div>
       <h1>Register a new user</h1>
 
-      <Link to="/add-player" state={obj}>
+      {/* <Link to="/add-player" state={obj}>
         Player
-      </Link>
+      </Link> */}
     </div>
   );
 }

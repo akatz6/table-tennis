@@ -13,8 +13,19 @@ const register = async (playerData, token) => {
   return response.data;
 };
 
+const getPlayers = async (token) => {
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+  const response = await axios.get(API_URL, config);
+  return response.data;
+};
+
 const PlayerService = {
   register,
+  getPlayers,
 };
 
 export default PlayerService;

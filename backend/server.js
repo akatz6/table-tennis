@@ -29,7 +29,7 @@ app.get("/", (req, res) => {
 });
 
 //Routes
-// app.use("/api/users", require("./routes/userRoutes"));
+app.use("/api/users", require("./routes/userRoutes"));
 app.use(
   "/api/players",
   require("./routes/playerRoutes")

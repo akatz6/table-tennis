@@ -24,6 +24,7 @@ function AddPlayer() {
   const { isLoading, isError, isSuccess, message } = useSelector(
     (state) => state.player
   );
+  
 
   const dispatch = useDispatch();
   const onChange = (e) => {
