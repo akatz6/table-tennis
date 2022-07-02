@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import { useSelector, useDispatch } from "react-redux";
@@ -16,10 +16,11 @@ function AddPlayer() {
     lastName: "",
     email: "",
   });
+  const ref = useRef();
 
-  const [file, setFile] = useState();
+  const [image, setImage] = useState();
 
-  const { firstName, lastName, email, image } = formData;
+  const { firstName, lastName, email } = formData;
   const { isLoading, isError, isSuccess, message } = useSelector(
     (state) => state.player
   );
@@ -32,7 +33,7 @@ function AddPlayer() {
     }));
   };
   const onChangeImage = (e) => {
-    setFile(e.target.files[0]);
+    setImage(e.target.files[0]);
   };
 
   useEffect(() => {
@@ -42,6 +43,12 @@ function AddPlayer() {
     if (isSuccess) {
       toast.success("New Player Added");
       dispatch(reset());
+      setFormData({
+        firstName: "",
+        lastName: "",
+        email: "",
+      });
+      ref.current.value = "";
     }
     dispatch(reset());
   }, [isError, isSuccess, message, dispatch]);
@@ -54,7 +61,7 @@ function AddPlayer() {
       email,
     };
     const fd = new FormData();
-    fd.append("image", file);
+    fd.append("image", image);
     fd.append("userData", JSON.stringify(userData));
     dispatch(register(fd));
   };
@@ -69,6 +76,7 @@ function AddPlayer() {
             type="text"
             placeholder="First Name"
             name="firstName"
+            value={firstName}
             onChange={onChange}
           />
         </Form.Group>
@@ -78,6 +86,7 @@ function AddPlayer() {
             type="text"
             placeholder="Last Name"
             name="lastName"
+            value={lastName}
             onChange={onChange}
           />
         </Form.Group>
@@ -87,6 +96,7 @@ function AddPlayer() {
             type="email"
             placeholder="Enter email"
             name="email"
+            value={email}
             onChange={onChange}
           />
           <Form.Text className="text-muted">
@@ -99,6 +109,7 @@ function AddPlayer() {
             type="file"
             name="image"
             className="form-control"
+            ref={ref}
             onChange={onChangeImage}
             accept="image/png, image/jpeg"
           />

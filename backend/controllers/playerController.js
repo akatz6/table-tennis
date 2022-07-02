@@ -7,6 +7,10 @@ const path = require("path");
 // Route Post /api/player
 // Private
 const createPlayer = asyncHandler(async (req, res) => {
+  if (!req?.files?.image) {
+    res.status(400);
+    throw new Error("Please include image");
+  }
   const image = req.files.image;
   const path = "backend/images/" + image.name;
 
@@ -16,6 +20,10 @@ const createPlayer = asyncHandler(async (req, res) => {
     }
   });
   const { firstName, lastName, email } = JSON.parse(req.body.userData);
+   if (!firstName || !lastName || !email) {
+     res.status(400);
+     throw new Error("Please fill out all the information");
+   }
   // Find if user exists
   const playerExists = await Player.findOne({ email });
   if (playerExists) {
@@ -23,7 +31,6 @@ const createPlayer = asyncHandler(async (req, res) => {
     throw new Error("Player already exists");
   }
 
-  console.log(firstName);
   // Create Player
   const player = await Player.create({
     firstName,
