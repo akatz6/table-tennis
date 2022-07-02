@@ -1,7 +1,7 @@
 import Navbar from "react-bootstrap/Navbar";
 import Nav from "react-bootstrap/Nav";
 import Container from "react-bootstrap/Container";
-import { FaSignInAlt, FaSignOutAlt, FaUser } from "react-icons/fa";
+import { FaSignInAlt, FaSignOutAlt, FaUser, FaPlus } from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { logout, reset } from "../features/auth/authSlice";
@@ -16,8 +16,8 @@ function Header() {
   const onLogout = () => {
     dispatch(logout());
     dispatch(reset());
-    navigate('/')
-  }
+    navigate("/");
+  };
 
   return (
     <div>
@@ -26,12 +26,20 @@ function Header() {
           <Link to="/">Home</Link>
           <ul>
             {user ? (
-              <li>
-                <Button variant="success" onClick={onLogout}>
-                  <FaSignOutAlt />
-                  Logout
-                </Button>
-              </li>
+              <>
+                <li>
+                  <Link className="btn btn-info" to="/add-player">
+                    <FaPlus />
+                    Add Player
+                  </Link>
+                </li>
+                <li>
+                  <Button variant="success" onClick={onLogout}>
+                    <FaSignOutAlt />
+                    Logout
+                  </Button>
+                </li>
+              </>
             ) : (
               <>
                 <li>
