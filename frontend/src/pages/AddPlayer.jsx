@@ -5,26 +5,36 @@ import { useSelector, useDispatch } from "react-redux";
 import { register, reset } from "../features/player/playerSlice";
 import { toast } from "react-toastify";
 import { useLocation } from "react-router-dom";
+import S3 from "react-aws-s3";
+window.Buffer = window.Buffer || require("buffer").Buffer;
+
+const config = {
+  bucketName: "aaron-table-tennis",
+  region: "us-west-2",
+  accessKeyId: process.env.REACT_APP_ACCESS_KEY_ID,
+  secretAccessKey: process.env.REACT_APP_SECRET_ACCESS_KEY,
+};
 
 function AddPlayer() {
   // const location = useLocation();
   // const { name } = location.state;
   // console.log(location);
   // console.log(name);
+
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
     email: "",
+    imageName: "",
   });
   const ref = useRef();
 
   const [image, setImage] = useState();
 
-  const { firstName, lastName, email } = formData;
+  const { firstName, lastName, email, imageName } = formData;
   const { isLoading, isError, isSuccess, message } = useSelector(
     (state) => state.player
   );
-  
 
   const dispatch = useDispatch();
   const onChange = (e) => {
@@ -33,11 +43,18 @@ function AddPlayer() {
       [e.target.name]: e.target.value,
     }));
   };
+
   const onChangeImage = (e) => {
     setImage(e.target.files[0]);
+    const name = `${Date.now()}${e.target.files[0].name}`;
+    setFormData((prevState) => ({
+      ...prevState,
+      [e.target.name]: name,
+    }));
   };
 
   useEffect(() => {
+    if (formData.email === "") return;
     if (isError) {
       toast.error(message);
     }
@@ -48,23 +65,27 @@ function AddPlayer() {
         firstName: "",
         lastName: "",
         email: "",
+        imageName: "",
       });
       ref.current.value = "";
     }
     dispatch(reset());
-  }, [isError, isSuccess, message, dispatch]);
+  }, [isError, isSuccess, message, dispatch, formData]);
 
   const onSubmit = (e) => {
     e.preventDefault();
+    const ReactS3Client = new S3(config);
+    ReactS3Client.uploadFile(image, imageName)
+      .then((data) => console.log(data))
+      .catch((err) => console.error(err));
+
     const userData = {
       firstName,
       lastName,
       email,
+      imageName,
     };
-    const fd = new FormData();
-    fd.append("image", image);
-    fd.append("userData", JSON.stringify(userData));
-    dispatch(register(fd));
+    dispatch(register(userData));
   };
 
   return (
@@ -108,7 +129,7 @@ function AddPlayer() {
           <Form.Label>Add an Image</Form.Label>
           <input
             type="file"
-            name="image"
+            name="imageName"
             className="form-control"
             ref={ref}
             onChange={onChangeImage}

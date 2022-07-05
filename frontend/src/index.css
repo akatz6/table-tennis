@@ -21,3 +21,9 @@ ul {
 li {
   padding: 0 10px;
 }
+
+.table-images{
+  height: 50px;
+  width: 50px;
+  margin: 0 25%;
+}
