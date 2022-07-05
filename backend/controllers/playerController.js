@@ -1,36 +1,21 @@
 const asyncHandler = require("express-async-handler");
 const Player = require("../models/playerModel");
-const { truncate } = require("fs");
-const path = require("path");
 
 // desc Create a new player
 // Route Post /api/player
 // Private
 const createPlayer = asyncHandler(async (req, res) => {
-  if (!req?.files?.image) {
+  const { firstName, lastName, email, imageName } = req.body;
+  if (!firstName || !lastName || !email || !imageName) {
     res.status(400);
-    throw new Error("Please include image");
+    throw new Error("Please fill out all the information");
   }
-  const image = req.files.image;
-  const path = "backend/images/" + image.name;
-
-  image.mv(path, (err) => {
-    if (err) {
-      return res.status(500).send(err);
-    }
-  });
-  const { firstName, lastName, email } = JSON.parse(req.body.userData);
-   if (!firstName || !lastName || !email) {
-     res.status(400);
-     throw new Error("Please fill out all the information");
-   }
   // Find if user exists
   const playerExists = await Player.findOne({ email });
   if (playerExists) {
     res.status(400);
     throw new Error("Player already exists");
   }
-
   // Create Player
   const player = await Player.create({
     firstName,
@@ -38,7 +23,7 @@ const createPlayer = asyncHandler(async (req, res) => {
     email,
     wins: 0,
     loses: 0,
-    image: path,
+    image: imageName,
     percentage: 0,
     lastPlayed: null,
   });
@@ -63,9 +48,9 @@ const createPlayer = asyncHandler(async (req, res) => {
 // Route Get /api/player
 // Private
 const getPlayers = asyncHandler(async (req, res) => {
-  const player = await Player.find();
-  if (player) {
-    res.status(200).json(player);
+  const players = await Player.find();
+  if (players.length) {
+    res.status(200).json(players);
   } else {
     res.status(400);
     throw new Error("Invalid Data");
