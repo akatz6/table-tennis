@@ -75,10 +75,9 @@ const getPlayer = asyncHandler(async (req, res) => {
 // Private
 const deletePlayer = asyncHandler(async (req, res) => {
   const player = await Player.findById(req.params.id);
-  console.log(player);
   if (player) {
-    await Player.remove();
-    res.status(200).json({ message: "success" });
+    await player.remove();
+    res.status(200).json({ message: "deleted" });
   } else {
     res.status(400);
     throw new Error("Invalid Data");

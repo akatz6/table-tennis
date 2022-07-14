@@ -54,13 +54,11 @@ function AddPlayer() {
   };
 
   useEffect(() => {
-    if (formData.email === "") return;
-    if (isError) {
+    if (isError && message) {
       toast.error(message);
     }
     if (isSuccess) {
       toast.success("New Player Added");
-      dispatch(reset());
       setFormData({
         firstName: "",
         lastName: "",

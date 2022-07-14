@@ -1,4 +1,4 @@
-import { getPlayers } from "../features/player/playerSlice";
+import { getPlayers, reset } from "../features/player/playerSlice";
 import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import PlayerRankings from "./PlayerRankings";
@@ -18,12 +18,11 @@ function Home() {
 
   useEffect(() => {
     dispatch(getPlayers());
+    dispatch(reset());
   }, [dispatch]);
-  const sitf =
-    "https://aaron-table-tennis.s3.us-west-2.amazonaws.com/1657040333058Screen+Shot+2022-07-01+at+1.30.09+PM.png";
   const { players } = useSelector((state) => state.player);
-  console.log(players);
 
+  
   if (!players.length) {
     return (
       <div>
@@ -43,7 +42,8 @@ function Home() {
               <th>Wins</th>
               <th>Loses</th>
               <th>Percentage</th>
-              <th>lastPlayed</th>
+              <th>Last Played</th>
+              <th>Options</th>
             </tr>
           </thead>
           <tbody>

@@ -23,9 +23,20 @@ const getPlayers = async (token) => {
   return response.data;
 };
 
+const deletePlayer = async (id, token) => {
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+  const response = await axios.delete(`${API_URL}/${id}`, config);
+  return response.data;
+};
+
 const PlayerService = {
   register,
   getPlayers,
+  deletePlayer,
 };
 
 export default PlayerService;

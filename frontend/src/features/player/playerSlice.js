@@ -41,6 +41,22 @@ export const getPlayers = createAsyncThunk(
   }
 );
 
+//Get players
+export const delPlayer = createAsyncThunk(
+  "player/delete",
+  async (id, thunkAPI) => {
+    try {
+      const token = thunkAPI.getState().auth.user.token;
+      return await playerService.deletePlayer(id, token);
+    } catch (error) {
+      const message =
+        error?.response?.data?.message || error.message || error.toString();
+
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
+
 export const playerSlice = createSlice({
   name: "player",
   initialState,
@@ -73,10 +89,22 @@ export const playerSlice = createSlice({
       })
       .addCase(getPlayers.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.isSuccess = true;
         state.players = action.payload;
       })
       .addCase(getPlayers.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isError = true;
+        state.players = [];
+      })
+      .addCase(delPlayer.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(delPlayer.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isSuccess = true;
+        state.message = action.payload;
+      })
+      .addCase(delPlayer.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
         state.players = [];
