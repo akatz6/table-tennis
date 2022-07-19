@@ -7,6 +7,7 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Header from "./components/Header";
 import AddPlayer from "./pages/AddPlayer";
+import EditPlayer from "./pages/EditPlayer";
 import PrivateRoute from './components/PrivateRoute'
 
 function App() {
@@ -16,6 +17,7 @@ function App() {
         <Header />
         <Routes>
           <Route path="/" element={<Home />} />
+          <Route path="/:id" element={<EditPlayer />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/add-player" element={<PrivateRoute />}>
