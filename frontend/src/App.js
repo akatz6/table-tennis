@@ -8,7 +8,8 @@ import Register from "./pages/Register";
 import Header from "./components/Header";
 import AddPlayer from "./pages/AddPlayer";
 import EditPlayer from "./pages/EditPlayer";
-import PrivateRoute from './components/PrivateRoute'
+import PlayerSelection from "./pages/PlayerSelection";
+import PrivateRoute from "./components/PrivateRoute";
 
 function App() {
   return (
@@ -22,6 +23,9 @@ function App() {
           <Route path="/register" element={<Register />} />
           <Route path="/add-player" element={<PrivateRoute />}>
             <Route path="/add-player" element={<AddPlayer />} />
+          </Route>
+          <Route path="/select-players" element={<PrivateRoute />}>
+            <Route path="/select-players" element={<PlayerSelection />} />
           </Route>
         </Routes>
       </Router>

@@ -18,12 +18,9 @@ function EditPlayer() {
   const params = useParams();
   const dispatch = useDispatch();
 
-  const {
-    firstName,
-    lastName,
-    email,
-    image
-  } = useSelector((state) => state.player.player);
+  const { firstName, lastName, email, image } = useSelector(
+    (state) => state.player.player
+  );
 
   const { isLoading, isError, isSuccess, message } = useSelector(
     (state) => state.player
@@ -73,7 +70,7 @@ function EditPlayer() {
     message,
   ]);
   const ref = useRef();
-  const onSubmit = (e) => {
+  const onSubmit = async (e) => {
     e.preventDefault();
 
     if (JSON.stringify(formDataPrev) === JSON.stringify(formData)) {
@@ -81,9 +78,7 @@ function EditPlayer() {
     }
     if (formData.image && formData.image !== image) {
       const ReactS3Client = new S3(config);
-      ReactS3Client.uploadFile(imageInfo, formData.image)
-        .then((data) => console.log(data))
-        .catch((err) => console.error(err));
+      await ReactS3Client.uploadFile(imageInfo, formData.image);
     }
     dispatch(updatePlayer(formData));
   };

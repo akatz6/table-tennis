@@ -70,13 +70,10 @@ function AddPlayer() {
     dispatch(reset());
   }, [isError, isSuccess, message, dispatch, formData]);
 
-  const onSubmit = (e) => {
+  const onSubmit = async (e) => {
     e.preventDefault();
     const ReactS3Client = new S3(config);
-    debugger;
-    ReactS3Client.uploadFile(image, imageName)
-      .then((data) => console.log(data))
-      .catch((err) => console.error(err));
+    await ReactS3Client.uploadFile(image, imageName);
 
     const userData = {
       firstName,
