@@ -1,12 +1,12 @@
 import Navbar from "react-bootstrap/Navbar";
-import Nav from "react-bootstrap/Nav";
 import Container from "react-bootstrap/Container";
 import { useState, useEffect } from "react";
 import { FaSignInAlt, FaSignOutAlt, FaUser, FaPlus } from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { logout, reset } from "../features/auth/authSlice";
-import { registerGame } from "../features/game/gameSlice";
+import { registerGame} from "../features/game/gameSlice";
+import { getPlayers } from "../features/player/playerSlice";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import { Gi3DHammer } from "react-icons/gi";
@@ -18,10 +18,15 @@ function Header() {
 
   const [gameSelection, setGameSelection] = useState({
     playersCount: 0,
-    points: 0,
+    points: 1,
     random: false,
-    playersArr: []
+    teamOne: [],
+    teamTwo: [],
   });
+
+  useEffect(() => {
+    dispatch(getPlayers());
+  }, [dispatch, setGameSelection]);
 
   const { user } = useSelector((state) => state.auth);
   const { players } = useSelector((state) => state.player);
@@ -29,11 +34,14 @@ function Header() {
   const [show, setShow] = useState(false);
 
   const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
+  const handleShow = () => {
+    dispatch(registerGame(gameSelection));
+    setShow(true);
+  };
   const submitPlayers = (e) => {
     e.preventDefault();
     dispatch(registerGame(gameSelection));
-    navigate("/select-players");
+    navigate("/redirect");
     setShow(false);
   };
   const onChange = (e) => {

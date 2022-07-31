@@ -2,10 +2,11 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
 const initialState = {
   playerData: {
-    playersCount: 0,
-    points: 0,
+    playersCount: 2,
+    points: 1,
     random: false,
-    playersArr: [],
+    teamOne: [],
+    teamTwo: [],
   },
 };
 
@@ -19,7 +20,7 @@ export const gameSlice = createSlice({
   name: "game",
   initialState,
   reducers: {
-    reset: (state) => {
+    resetGame: (state) => {
       state.playerData = {};
     },
   },
@@ -30,5 +31,5 @@ export const gameSlice = createSlice({
   },
 });
 
-// export const { reset } = gameSlice.actions;
+export const { resetGame } = gameSlice.actions;
 export default gameSlice.reducer;

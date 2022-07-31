@@ -5,16 +5,7 @@ import PlayerRankings from "./PlayerRankings";
 import Table from "react-bootstrap/Table";
 
 function Home() {
-  // const obj = {
-  //     name :"aaron"
-  // }
-  //  {
-  //    /* <Link to="/add-player" state={obj}>
-  //     Player
-  //   </Link> */
-  //  }
   const dispatch = useDispatch();
-  // let test = 0;
 
   useEffect(() => {
     dispatch(getPlayers());
@@ -22,7 +13,6 @@ function Home() {
   }, [dispatch]);
   const { players } = useSelector((state) => state.player);
 
-  
   if (!players.length) {
     return (
       <div>

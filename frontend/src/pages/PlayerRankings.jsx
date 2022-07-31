@@ -47,7 +47,6 @@ function PlayerRankings(player) {
   ]);
 
   const updatePlayer = (e) => {
-    console.log(e.target.value);
     navigate(`/${e.target.value}`);
   };
 
