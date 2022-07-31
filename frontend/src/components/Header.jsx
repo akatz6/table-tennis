@@ -35,6 +35,10 @@ function Header() {
 
   const handleClose = () => setShow(false);
   const handleShow = () => {
+    setGameSelection((prevState) =>({
+      ...prevState,
+      random: false
+    }));
     dispatch(registerGame(gameSelection));
     setShow(true);
   };

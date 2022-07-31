@@ -22,49 +22,30 @@ function PlayerSelection() {
   const [firstTeam, setFirstTeam] = useState([]);
   const [secondTeam, setSecondTeam] = useState([]);
   const [playersChosen, setPlayersChosen] = useState(0);
+
   useEffect(() => {
-    // if (match) {
-    //   setFirstTeam([]);
-    //   setSecondTeam([]);
-    // }
-  }, []);
-
-
-  // useEffect(() => {
-  //   if (random && !randomSet) {
-  //     let tempArray = [...players];
-  //     const num = Math.floor(Math.random() * tempArray.length);
-  //     for (let i = 0; i < playersCount; i++) {
-  //       if (i < Math.floor(Number(playersCount) / 2)) {
-  //         const tempfirstTeam = [...firstTeam];
-  //         tempfirstTeam.push(tempArray[num]);
-  //         setFirstTeam(tempfirstTeam);
-  //       } else {
-  //         const tempsecondTeam = [...secondTeam];
-  //         tempsecondTeam.push(tempArray[num]);
-  //         setSecondTeam(tempsecondTeam);
-  //       }
-  //       tempArray = tempArray.filter((element, index) => index !== num);
-  //     }
-  //     hasRandomSet(true);
-  //   }
-  // }, [
-  //   random,
-  //   randomSet,
-  //   hasRandomSet,
-  //   players,
-  //   playersCount,
-  //   firstTeam,
-  //   secondTeam,
-  //   setFirstTeam,
-  //   setSecondTeam,
-  // ]);
+    if (random) {
+      let tempArray = [...players];
+      let tempFirstTeam = [];
+      let tempSecondTeam = [];
+      if (secondTeam.length < Math.floor(Number(playersCount) / 2)) {
+        for (let i = 0; i < Math.floor(Number(playersCount)); i++) {
+          const num = Math.floor(Math.random() * tempArray.length);
+          if (i < Math.floor(Number(playersCount) / 2)) {
+            tempFirstTeam.push(tempArray[num]);
+          } else {
+            tempSecondTeam.push(tempArray[num]);
+          }
+          tempArray.splice(num, 1);
+        }
+      }
+      setFirstTeam(tempFirstTeam);
+      setSecondTeam(tempSecondTeam);
+    }
+  }, [playersChosen]);
 
   const onClick = (e) => {
     if (e.target.checked) {
-      // TODO why is this line needed,
-      //   without this line the counter goes one over
-      console.log(playersChosen >= Number(playersCount));
       if (playersChosen >= Number(playersCount)) {
         e.target.checked = !e.target.checked;
         toast.error(`Only allowed to add ${playersCount} players`);
