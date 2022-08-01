@@ -4,7 +4,6 @@ import Form from "react-bootstrap/Form";
 import { useSelector, useDispatch } from "react-redux";
 import { register, reset } from "../features/player/playerSlice";
 import { toast } from "react-toastify";
-import { useLocation } from "react-router-dom";
 import S3 from "react-aws-s3";
 window.Buffer = window.Buffer || require("buffer").Buffer;
 

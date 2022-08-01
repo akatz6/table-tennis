@@ -4,6 +4,8 @@ import { useSelector, useDispatch } from "react-redux";
 import InputGroup from "react-bootstrap/InputGroup";
 import { toast } from "react-toastify";
 import PlayerImageAndName from "./PlayerImageAndName";
+import Button from "react-bootstrap/Button";
+import { useNavigate } from "react-router-dom";
 
 const vsStyle = {
   position: "absolute",
@@ -17,6 +19,7 @@ function PlayerSelection() {
   );
 
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const { players } = useSelector((state) => state.player);
   const [firstTeam, setFirstTeam] = useState([]);
@@ -43,6 +46,17 @@ function PlayerSelection() {
       setSecondTeam(tempSecondTeam);
     }
   }, [playersChosen]);
+
+  const playersSelected = (e) => {
+    const gameSet = {
+      playersCount,
+      points,
+      teamOne: firstTeam,
+      teamTwo: secondTeam,
+    };
+    dispatch(registerGame(gameSet));
+    navigate("/play-game");
+  };
 
   const onClick = (e) => {
     if (e.target.checked) {
@@ -99,6 +113,17 @@ function PlayerSelection() {
           ))}
         </div>
       </div>
+      <div>
+        {secondTeam.length === Math.floor(Number(playersCount) / 2) && (
+          <Button
+            variant="success"
+            style={{ display: "block", margin: "0 auto" }}
+            onClick={playersSelected}
+          >
+            Success
+          </Button>
+        )}
+      </div>
 
       {!random && <h3 className="mb-3">Select Players</h3>}
       {!random &&
@@ -115,23 +140,6 @@ function PlayerSelection() {
                 {player.firstName} {player.lastName}
               </InputGroup.Text>
             </InputGroup>
-            {/* <input
-              key={player.id}
-              class="form-check-input"
-              type="radio"
-              name="flexRadioDefault"
-              id="flexRadioDefault1"
-              value={player.id}
-            />
-            <ToggleButton
-              type="radio"
-              name="radio"
-              //   value={radio.value}
-              //   checked={radioValue === radio.value}
-              //   onChange={(e) => setRadioValue(e.currentTarget.value)}
-            >
-              {player.name}
-            </ToggleButton> */}
           </div>
         ))}
     </div>

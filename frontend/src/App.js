@@ -10,6 +10,7 @@ import AddPlayer from "./pages/AddPlayer";
 import EditPlayer from "./pages/EditPlayer";
 import PlayerSelection from "./pages/PlayerSelection";
 import Redirect from "./pages/Redirect";
+import PlayGame from "./pages/PlayGame";
 import PrivateRoute from "./components/PrivateRoute";
 
 function App() {
@@ -30,6 +31,9 @@ function App() {
           </Route>
           <Route path="/redirect" element={<PrivateRoute />}>
             <Route path="/redirect" element={<Redirect />} />
+          </Route>
+          <Route path="/play-game" element={<PrivateRoute />}>
+            <Route path="/play-game" element={<PlayGame />} />
           </Route>
         </Routes>
       </Router>
