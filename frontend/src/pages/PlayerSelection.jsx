@@ -120,7 +120,7 @@ function PlayerSelection() {
             style={{ display: "block", margin: "0 auto" }}
             onClick={playersSelected}
           >
-            Success
+            Go To Game
           </Button>
         )}
       </div>
