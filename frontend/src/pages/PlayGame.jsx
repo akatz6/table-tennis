@@ -13,23 +13,30 @@ function PlayGame() {
 
   const [teamOnePoints, setTeamOnePoints] = useState(0);
   const [teamTwoPoints, setTeamTwoPoints] = useState(0);
+  const [gamePoints, setGamePoints] = useState(Number(points));
+
+  //   useEffect(() => {
+  //     if (gamePoints < teamOnePoints && gamePoints < teamTwoPoints) {
+  //       if (teamOnePoints === gamePoints) {
+  //         console.log("Team One Wins");
+  //       } else if (teamTwoPoints === gamePoints) {
+  //         console.log("Team Two Wins");
+  //       }
+  //     }
+  //   }, [teamOnePoints]);
 
   useEffect(() => {
-    if (teamOnePoints === Number(points)) {
-      console.log("Team One Wins");
-    } else if (teamTwoPoints === Number(points)) {
-      console.log("Team Two Wins");
+    if (gamePoints > teamOnePoints && gamePoints > teamTwoPoints) {
+      setTimeout(() => {
+        const num = Math.floor(Math.random() * 10);
+        if (num % 2 === 0) {
+          setTeamOnePoints(teamOnePoints + 1);
+        } else {
+          setTeamTwoPoints(teamTwoPoints + 1);
+        }
+      }, 1500);
     }
-  }, [teamTwoPoints, points, teamOnePoints]);
-
-  const onClick = () => {
-    const num = Math.floor(Math.random() * 10);
-    if (num % 2 === 0) {
-      setTeamOnePoints(teamOnePoints + 1);
-    } else {
-      setTeamTwoPoints(teamTwoPoints + 1);
-    }
-  };
+  }, [teamOnePoints, teamTwoPoints]);
 
   return (
     <div>
@@ -39,12 +46,12 @@ function PlayGame() {
         </h1>
       </div>
       <div>
-        {teamTwoPoints === Number(points) && (
+        {teamOnePoints === gamePoints && (
           <div>
             <h2 style={{ marginLeft: "25%" }}>Winner</h2>
           </div>
         )}
-        {teamTwoPoints === Number(points) && (
+        {teamTwoPoints === gamePoints && (
           <div>
             <h2 style={{ marginLeft: "75%" }}>Winner</h2>
           </div>
@@ -71,15 +78,6 @@ function PlayGame() {
           <h4 style={{ marginLeft: "50%" }}>{teamTwoPoints}</h4>
         </div>
       </div>
-      {teamOnePoints < points && teamTwoPoints < points && (
-        <Button
-          variant="success"
-          style={{ display: "block", margin: "0 auto" }}
-          onClick={onClick}
-        >
-          Volley
-        </Button>
-      )}
     </div>
   );
 }
