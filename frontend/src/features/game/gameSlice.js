@@ -3,7 +3,7 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 const initialState = {
   playerData: {
     playersCount: 2,
-    points: 1,
+    points: 0,
     random: false,
     teamOne: [],
     teamTwo: [],

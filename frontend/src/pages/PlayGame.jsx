@@ -1,11 +1,13 @@
 import { useSelector, useDispatch } from "react-redux";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import PlayerImageAndName from "./PlayerImageAndName";
 import Button from "react-bootstrap/Button";
 import { useNavigate } from "react-router-dom";
+import { winner, loser } from "../features/results/resultsSlice";
 
 function PlayGame() {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const { points, teamOne, teamTwo } = useSelector(
     (state) => state.game.playerData
@@ -15,15 +17,11 @@ function PlayGame() {
   const [teamTwoPoints, setTeamTwoPoints] = useState(0);
   const [gamePoints, setGamePoints] = useState(Number(points));
 
-  //   useEffect(() => {
-  //     if (gamePoints < teamOnePoints && gamePoints < teamTwoPoints) {
-  //       if (teamOnePoints === gamePoints) {
-  //         console.log("Team One Wins");
-  //       } else if (teamTwoPoints === gamePoints) {
-  //         console.log("Team Two Wins");
-  //       }
-  //     }
-  //   }, [teamOnePoints]);
+  useEffect(() => {
+    if (points === 0) {
+      navigate("/");
+    }
+  }, []);
 
   useEffect(() => {
     if (gamePoints > teamOnePoints && gamePoints > teamTwoPoints) {
@@ -35,8 +33,16 @@ function PlayGame() {
           setTeamTwoPoints(teamTwoPoints + 1);
         }
       }, 1500);
+    } else {
+      if (teamOnePoints === gamePoints) {
+        dispatch(winner(teamOne));
+        dispatch(loser(teamTwo));
+      } else {
+         dispatch(winner(teamTwo));
+         dispatch(loser(teamOne));
+      }
     }
-  }, [teamOnePoints, teamTwoPoints]);
+  }, [gamePoints, teamOnePoints, teamTwoPoints]);
 
   return (
     <div>

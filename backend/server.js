@@ -29,6 +29,7 @@ app.use(
   "/api/players",
   require("./routes/playerRoutes")
 );
+app.use("/api/results", require("./routes/resultRoutes"));
 
 app.use(errorHandler);
 app.listen(PORT, () => console.log("server Started"));
