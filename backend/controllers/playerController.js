@@ -48,7 +48,7 @@ const createPlayer = asyncHandler(async (req, res) => {
 // Route Get /api/player
 // Private
 const getPlayers = asyncHandler(async (req, res) => {
-  const players = await Player.find();
+  const players = await (await Player.find().sort("percentage")).reverse();
   if (players.length) {
     res.status(200).json(players);
   } else {

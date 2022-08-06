@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { delPlayer, reset } from "../features/player/playerSlice";
 import { toast } from "react-toastify";
+import moment from 'moment'
 
 function PlayerRankings(player) {
   const {
@@ -69,8 +70,12 @@ function PlayerRankings(player) {
         <td>{email}</td>
         <td>{wins}</td>
         <td>{loses}</td>
-        <td>{percentage}</td>
-        <td>{lastPlayed === null ? "had not played yet" : lastPlayed}</td>
+        <td>{percentage.toFixed(3)}</td>
+        <td>
+          {lastPlayed === null
+            ? "had not played yet"
+            : moment(lastPlayed).format("MMM Do YY")}
+        </td>
         <td>
           <div style={{ display: "flex", justifyContent: "space-between" }}>
             <Button variant="primary" onClick={updatePlayer} value={_id}>

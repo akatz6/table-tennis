@@ -8,7 +8,7 @@ const winningTeam = asyncHandler(async (req, res) => {
   req.body.forEach((element) => {
     element.wins += 1;
     element.lastPlayed = Date.now();
-    element.percentage = (element.wins / (element.wins + element.loses)) * 1000;
+    element.percentage = element.wins / (element.wins + element.loses);
   });
   let player = await Player.findById(req.body[0]._id);
   if (player) {
@@ -36,7 +36,7 @@ const losingTeam = asyncHandler(async (req, res) => {
       element.loses += 1;
       element.lastPlayed = Date.now();
       element.percentage =
-        (element.wins / (element.wins + element.loses)) * 1000;
+        element.wins / (element.wins + element.loses);
     });
     let player = await Player.findById(req.body[0]._id);
     if (player) {
