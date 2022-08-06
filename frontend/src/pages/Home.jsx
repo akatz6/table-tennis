@@ -22,6 +22,7 @@ function Home() {
   } else {
     return (
       <div>
+        <h1>Table Tennis Rankings</h1>
         <Table striped bordered hover>
           <thead>
             <tr>
