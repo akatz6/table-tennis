@@ -38,9 +38,13 @@ if(process.env.NODE_ENV === 'production'){
   app.get('*', (req, res) => res.sendFile(__dirname, '../', 'frontend', 'build', 'index.html'))
 }else{
   console.log("test")
-  app.get("/", (req, res) => {
-    res.send({ message: "Hello" });
-  });
+  app.use(express.static(path.join(__dirname, "../frontend/build")));
+  app.get("*", (req, res) =>
+    res.sendFile(__dirname, "../", "frontend", "build", "index.html")
+  );
+  // app.get("/", (req, res) => {
+  //   res.send({ message: "Hello" });
+  // });
 }
 
 app.use(errorHandler);
