@@ -3,7 +3,6 @@ const fileUpload = require("express-fileupload");
 const path = require("path");
 const colors = require("colors");
 const dotenv = require("dotenv").config();
-const path = require('path')
 
 const PORT = process.env.PORT || 8010;
 const { errorHandler } = require("./middleware/errorMiddleware");
@@ -34,6 +33,7 @@ app.use("/api/results", require("./routes/resultRoutes"));
 
 // Serve Frontend
 if(process.env.NODE_ENV === 'production'){
+  console.log("testOne");
   app.use(express.static(path.join(__dirname, '../frontend/build')))
   app.get('*', (req, res) => res.sendFile(__dirname, '../', 'frontend', 'build', 'index.html'))
 }else{
