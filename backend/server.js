@@ -31,21 +31,6 @@ app.use(
 );
 app.use("/api/results", require("./routes/resultRoutes"));
 
-// Serve Frontend
-if(process.env.NODE_ENV === 'production'){
-  console.log("testOne");
-  app.use(express.static(path.join(__dirname, '../frontend/build')))
-  app.get('*', (req, res) => res.sendFile(__dirname, '../', 'frontend', 'build', 'index.html'))
-}else{
-  console.log("test")
-  app.use(express.static(path.join(__dirname, "../frontend/build")));
-  app.get("*", (req, res) =>
-    res.sendFile(__dirname, "../", "frontend", "build", "index.html")
-  );
-  // app.get("/", (req, res) => {
-  //   res.send({ message: "Hello" });
-  // });
-}
 
 app.use(errorHandler);
 app.listen(PORT, () => console.log("server Started"));

@@ -24,7 +24,6 @@ function PlayerSelection() {
   const { players } = useSelector((state) => state.player);
   const [firstTeam, setFirstTeam] = useState([]);
   const [secondTeam, setSecondTeam] = useState([]);
-  const [playersChosen, setPlayersChosen] = useState(0);
 
   useEffect(() => {
     if (random) {
@@ -45,7 +44,12 @@ function PlayerSelection() {
       setFirstTeam(tempFirstTeam);
       setSecondTeam(tempSecondTeam);
     }
-  }, [playersChosen]);
+  }, []);
+
+  useEffect(() => {
+    console.log(secondTeam);
+    console.log(firstTeam);
+  }, [secondTeam, firstTeam]);
 
   const playersSelected = (e) => {
     const gameSet = {
@@ -60,11 +64,21 @@ function PlayerSelection() {
 
   const onClick = (e) => {
     if (e.target.checked) {
-      if (playersChosen >= Number(playersCount)) {
+      if (
+        secondTeam.length ===
+          Math.floor(
+            Number(playersCount) / 2 ||
+              firstTeam.length === Math.floor(Number(playersCount) / 2)
+          ) &&
+        firstTeam.length ===
+          Math.floor(
+            Number(playersCount) / 2 ||
+              firstTeam.length === Math.floor(Number(playersCount) / 2)
+          )
+      ) {
         e.target.checked = !e.target.checked;
         toast.error(`Only allowed to add ${playersCount} players`);
       } else {
-        setPlayersChosen(playersChosen + 1);
         if (firstTeam.length < Math.floor(Number(playersCount) / 2)) {
           const player = players.find(
             (element) => element._id === e.target.value
@@ -82,7 +96,6 @@ function PlayerSelection() {
         }
       }
     } else {
-      setPlayersChosen(playersChosen - 1);
       let tempFirstTeam = firstTeam.filter(
         (element) => element._id !== e.target.value
       );

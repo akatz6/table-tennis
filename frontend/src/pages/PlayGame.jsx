@@ -1,7 +1,6 @@
 import { useSelector, useDispatch } from "react-redux";
 import { useState, useEffect } from "react";
 import PlayerImageAndName from "./PlayerImageAndName";
-import Button from "react-bootstrap/Button";
 import { useNavigate } from "react-router-dom";
 import { winner, loser } from "../features/results/resultsSlice";
 
@@ -42,7 +41,7 @@ function PlayGame() {
          dispatch(loser(teamOne));
       }
     }
-  }, [gamePoints, teamOnePoints, teamTwoPoints]);
+  }, [dispatch, gamePoints, teamOne, teamOnePoints, teamTwo, teamTwoPoints]);
 
   return (
     <div>
