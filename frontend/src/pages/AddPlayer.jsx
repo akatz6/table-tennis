@@ -48,7 +48,8 @@ function AddPlayer() {
   };
 
   useEffect(() => {
-    if (isError && message) {
+    if (isError || message) {
+      console.log(message)
       toast.error(message);
     }
     if (isSuccess) {
@@ -66,6 +67,12 @@ function AddPlayer() {
 
   const onSubmit = async (e) => {
     e.preventDefault();
+
+    if(!imageName){
+      toast.error("Please add image");
+      return
+    }
+
     const ReactS3Client = new S3(config);
     await ReactS3Client.uploadFile(image, imageName);
 
