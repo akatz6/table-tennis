@@ -4,6 +4,7 @@ import { useSelector, useDispatch } from "react-redux";
 import PlayerRankings from "./PlayerRankings";
 import Table from "react-bootstrap/Table";
 
+
 function Home() {
   const dispatch = useDispatch();
 
@@ -12,7 +13,7 @@ function Home() {
     dispatch(reset());
   }, [dispatch]);
   const { players } = useSelector((state) => state.player);
-
+  const { user } = useSelector((state) => state.auth);
   if (!players.length) {
     return (
       <div>
@@ -34,7 +35,7 @@ function Home() {
               <th>Loses</th>
               <th>Percentage</th>
               <th>Last Played</th>
-              <th>Options</th>
+              {user && <th>Options</th>}
             </tr>
           </thead>
           <tbody>

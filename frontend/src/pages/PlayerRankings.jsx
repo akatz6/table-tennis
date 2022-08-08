@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { delPlayer, reset } from "../features/player/playerSlice";
 import { toast } from "react-toastify";
-import moment from 'moment'
+import moment from "moment";
 
 function PlayerRankings(player) {
   const {
@@ -18,6 +18,8 @@ function PlayerRankings(player) {
     percentage,
     lastPlayed,
   } = player.player;
+
+  const { user } = useSelector((state) => state.auth);
 
   const { isLoading, isError, isSuccess, message } = useSelector(
     (state) => state.player
@@ -76,16 +78,18 @@ function PlayerRankings(player) {
             ? "had not played yet"
             : moment(lastPlayed).format("MMM Do YY")}
         </td>
-        <td>
-          <div style={{ display: "flex", justifyContent: "space-between" }}>
-            <Button variant="primary" onClick={updatePlayer} value={_id}>
-              Update
-            </Button>
-            <Button variant="danger" onClick={deletePlayer} value={_id}>
-              Delete
-            </Button>
-          </div>
-        </td>
+        {user && (
+          <td>
+            <div style={{ display: "flex", justifyContent: "space-between" }}>
+              <Button variant="primary" onClick={updatePlayer} value={_id}>
+                Update
+              </Button>
+              <Button variant="danger" onClick={deletePlayer} value={_id}>
+                Delete
+              </Button>
+            </div>
+          </td>
+        )}
       </tr>
     </>
   );
