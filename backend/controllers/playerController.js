@@ -89,6 +89,12 @@ const deletePlayer = asyncHandler(async (req, res) => {
 // Private
 const updatePlayer = asyncHandler(async (req, res) => {
   const player = await Player.findById(req.params.id);
+  const { firstName, email, lastName } = req.body;
+  if (!firstName || !email || !lastName) {
+    res.status(400);
+    throw new Error("Please include all fields");
+  }
+
   if (player) {
     const playerUpdate = await Player.findByIdAndUpdate(
       req.params.id,

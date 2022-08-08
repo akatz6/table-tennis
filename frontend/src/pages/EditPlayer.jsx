@@ -49,13 +49,15 @@ function EditPlayer() {
     if (isSuccess) {
       toast.success("Player Updated");
       ref.current.value = "";
-      dispatch(reset());
     }
+    dispatch(reset());
     const { id } = params;
     dispatch(getPlayer(id));
-    changePicture(`${process.env.REACT_APP_S3_FILE}${image}`);
-    setFormData({ id, firstName, lastName, email, image });
-    setFormDataPrev({ firstName, lastName, email, image });
+    if (image) {
+      changePicture(`${process.env.REACT_APP_S3_FILE}${image}`);
+      setFormData({ id, firstName, lastName, email, image });
+      setFormDataPrev({ id, firstName, lastName, email, image });
+    }
   }, [
     params,
     dispatch,
@@ -72,8 +74,8 @@ function EditPlayer() {
   const ref = useRef();
   const onSubmit = async (e) => {
     e.preventDefault();
-
     if (JSON.stringify(formDataPrev) === JSON.stringify(formData)) {
+      toast.error("You didn't change anything");
       return;
     }
     if (formData.image && formData.image !== image) {
