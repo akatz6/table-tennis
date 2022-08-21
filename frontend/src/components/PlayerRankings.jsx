@@ -5,6 +5,8 @@ import { useNavigate } from "react-router-dom";
 import { delPlayer, reset } from "../features/player/playerSlice";
 import { toast } from "react-toastify";
 import moment from "moment";
+import Modal from "react-bootstrap/Modal";
+import Form from "react-bootstrap/Form";
 
 function PlayerRankings(player) {
   const {
@@ -24,6 +26,18 @@ function PlayerRankings(player) {
   const { isLoading, isError, isSuccess, message } = useSelector(
     (state) => state.player
   );
+  const [show, setShow] = useState(false);
+  const [delId, setDelId] = useState();
+  const handleClose = () => setShow(false);
+  const handleShow = (e) => {
+    setDelId(e.target.value);
+    setShow(true);
+  };
+
+  const deletePlayer = () => {
+    dispatch(delPlayer(delId));
+    setRowDeleted(true);
+  };
 
   const [rowDeleted, setRowDeleted] = useState(false);
   const navigate = useNavigate();
@@ -53,10 +67,6 @@ function PlayerRankings(player) {
     navigate(`/${e.target.value}`);
   };
 
-  const deletePlayer = (e) => {
-    dispatch(delPlayer(e.target.value));
-    setRowDeleted(true);
-  };
   return (
     <>
       <tr>
@@ -84,13 +94,29 @@ function PlayerRankings(player) {
               <Button variant="primary" onClick={updatePlayer} value={_id}>
                 Update
               </Button>
-              <Button variant="danger" onClick={deletePlayer} value={_id}>
+              <Button variant="danger" onClick={handleShow} value={_id}>
                 Delete
               </Button>
             </div>
           </td>
         )}
       </tr>
+      <Modal show={show} onHide={handleClose}>
+        <Modal.Header closeButton>
+          <Modal.Title>Delete Player</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <h3>Are you sure you want to delete this player?</h3>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleClose}>
+            Cancel
+          </Button>
+          <Button variant="primary" onClick={deletePlayer}>
+            Delete
+          </Button>
+        </Modal.Footer>
+      </Modal>
     </>
   );
 }

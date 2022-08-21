@@ -3,9 +3,10 @@ import { registerGame } from "../features/game/gameSlice";
 import { useSelector, useDispatch } from "react-redux";
 import InputGroup from "react-bootstrap/InputGroup";
 import { toast } from "react-toastify";
-import PlayerImageAndName from "./PlayerImageAndName";
+import PlayerImageAndName from "../components/PlayerImageAndName";
 import Button from "react-bootstrap/Button";
 import { useNavigate } from "react-router-dom";
+
 
 const vsStyle = {
   position: "absolute",
@@ -17,6 +18,7 @@ function PlayerSelection() {
   const { playersCount, points, random, teamOne, teamTwo } = useSelector(
     (state) => state.game.playerData
   );
+ 
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -46,10 +48,7 @@ function PlayerSelection() {
     }
   }, []);
 
-  useEffect(() => {
-    console.log(secondTeam);
-    console.log(firstTeam);
-  }, [secondTeam, firstTeam]);
+  useEffect(() => {}, [secondTeam, firstTeam]);
 
   const playersSelected = (e) => {
     const gameSet = {
