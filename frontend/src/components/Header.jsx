@@ -5,7 +5,7 @@ import { FaSignInAlt, FaSignOutAlt, FaUser, FaPlus } from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { logout, reset } from "../features/auth/authSlice";
-import { registerGame} from "../features/game/gameSlice";
+import { registerGame } from "../features/game/gameSlice";
 import { getPlayers } from "../features/player/playerSlice";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
@@ -17,8 +17,8 @@ function Header() {
   const dispatch = useDispatch();
 
   const [gameSelection, setGameSelection] = useState({
-    playersCount: 0,
-    points: 1,
+    playersCount: 2,
+    points: 2,
     random: false,
     teamOne: [],
     teamTwo: [],
@@ -35,10 +35,13 @@ function Header() {
 
   const handleClose = () => setShow(false);
   const handleShow = () => {
-    setGameSelection((prevState) =>({
-      ...prevState,
-      random: false
-    }));
+    setGameSelection({
+      playersCount: 2,
+      points: 2,
+      random: false,
+      teamOne: [],
+      teamTwo: [],
+    });
     dispatch(registerGame(gameSelection));
     setShow(true);
   };
@@ -146,9 +149,9 @@ function Header() {
             <Form.Control
               type="number"
               name="points"
-              min="1"
+              min="2"
               max="10"
-              placeholder="1"
+              placeholder="2"
               onChange={onChange}
             />
           </Form.Group>

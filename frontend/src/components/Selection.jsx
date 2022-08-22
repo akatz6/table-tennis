@@ -6,6 +6,12 @@ import { toast } from "react-toastify";
 import PlayerImageAndName from "../components/PlayerImageAndName";
 import Button from "react-bootstrap/Button";
 import { useNavigate } from "react-router-dom";
+import {
+  setRandomTeams,
+  checkTeamsLength,
+  removeFromTeam,
+  setTeam,
+} from "../commonJSFiles/playerSelectionCode";
 
 const vsStyle = {
   position: "absolute",
@@ -27,22 +33,13 @@ function Selection() {
 
   useEffect(() => {
     if (random) {
-      let tempArray = [...players];
-      let tempFirstTeam = [];
-      let tempSecondTeam = [];
-      if (secondTeam.length < Math.floor(Number(playersCount) / 2)) {
-        for (let i = 0; i < Math.floor(Number(playersCount)); i++) {
-          const num = Math.floor(Math.random() * tempArray.length);
-          if (i < Math.floor(Number(playersCount) / 2)) {
-            tempFirstTeam.push(tempArray[num]);
-          } else {
-            tempSecondTeam.push(tempArray[num]);
-          }
-          tempArray.splice(num, 1);
-        }
-      }
-      setFirstTeam(tempFirstTeam);
-      setSecondTeam(tempSecondTeam);
+      setRandomTeams(
+        players,
+        playersCount,
+        secondTeam,
+        setFirstTeam,
+        setSecondTeam
+      );
     }
   }, []);
 
@@ -62,45 +59,21 @@ function Selection() {
   const onClick = (e) => {
     if (e.target.checked) {
       if (
-        secondTeam.length ===
-          Math.floor(
-            Number(playersCount) / 2 ||
-              firstTeam.length === Math.floor(Number(playersCount) / 2)
-          ) &&
-        firstTeam.length ===
-          Math.floor(
-            Number(playersCount) / 2 ||
-              firstTeam.length === Math.floor(Number(playersCount) / 2)
-          )
+        checkTeamsLength(secondTeam, playersCount) &&
+        checkTeamsLength(firstTeam, playersCount)
       ) {
         e.target.checked = !e.target.checked;
         toast.error(`Only allowed to add ${playersCount} players`);
       } else {
         if (firstTeam.length < Math.floor(Number(playersCount) / 2)) {
-          const player = players.find(
-            (element) => element._id === e.target.value
-          );
-          const tempTeamArray = [...firstTeam];
-          tempTeamArray.push(player);
-          setFirstTeam(tempTeamArray);
+          setTeam(players, e.target.value, firstTeam, setFirstTeam);
         } else {
-          const player = players.find(
-            (element) => element._id === e.target.value
-          );
-          const tempTeamArray = [...secondTeam];
-          tempTeamArray.push(player);
-          setSecondTeam(tempTeamArray);
+          setTeam(players, e.target.value, secondTeam, setSecondTeam);
         }
       }
     } else {
-      let tempFirstTeam = firstTeam.filter(
-        (element) => element._id !== e.target.value
-      );
-      setFirstTeam(tempFirstTeam);
-      let tempSecondTeam = secondTeam.filter(
-        (element) => element._id !== e.target.value
-      );
-      setSecondTeam(tempSecondTeam);
+      removeFromTeam(firstTeam, e.target.value, setFirstTeam);
+      removeFromTeam(secondTeam, e.target.value, setSecondTeam);
     }
   };
   return (

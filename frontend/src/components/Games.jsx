@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import PlayerImageAndName from "../components/PlayerImageAndName";
 import { useNavigate } from "react-router-dom";
 import { winner, loser } from "../features/results/resultsSlice";
+import { setPoints } from "../commonJSFiles/gameCode";
 function Games() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -23,14 +24,7 @@ function Games() {
 
   useEffect(() => {
     if (gamePoints > teamOnePoints && gamePoints > teamTwoPoints) {
-      setTimeout(() => {
-        const num = Math.floor(Math.random() * 10);
-        if (num % 2 === 0) {
-          setTeamOnePoints(teamOnePoints + 1);
-        } else {
-          setTeamTwoPoints(teamTwoPoints + 1);
-        }
-      }, 1500);
+      setPoints(setTeamOnePoints, setTeamTwoPoints);
     } else {
       if (teamOnePoints === gamePoints) {
         dispatch(winner(teamOne));
@@ -40,7 +34,8 @@ function Games() {
         dispatch(loser(teamOne));
       }
     }
-  }, [dispatch, gamePoints, teamOne, teamOnePoints, teamTwo, teamTwoPoints]);
+  }, [teamOnePoints, teamTwoPoints]);
+
   return (
     <div>
       <div style={{ margin: "20px 0" }}>

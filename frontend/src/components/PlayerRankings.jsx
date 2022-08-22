@@ -106,7 +106,9 @@ function PlayerRankings(player) {
           <Modal.Title>Delete Player</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <h3>Are you sure you want to delete this player?</h3>
+          <h3>
+            Are you sure you want to delete {firstName} {lastName} player?
+          </h3>
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={handleClose}>
